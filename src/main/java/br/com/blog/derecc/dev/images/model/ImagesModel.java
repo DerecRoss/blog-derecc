@@ -1,6 +1,6 @@
 package br.com.blog.derecc.dev.images.model;
 
-import br.com.blog.derecc.dev.post.enums.PostStatus;
+import br.com.blog.derecc.dev.post.model.PostModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +24,12 @@ public class ImagesModel {
 
     private String filePath;
 
+    private String storedFileName;
+
     private String contentType;
 
     private Long size;
 
     LocalDateTime uploadedAt;
+
 }

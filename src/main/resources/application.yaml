@@ -1,3 +1,5 @@
+file:
+  upload-dir: uploadDir
 spring:
   application:
     name: derecc.dev
@@ -15,3 +17,10 @@ spring:
       format_sql: true
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
