@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: derecc.dev
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/derecc
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      format_sql: true
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
