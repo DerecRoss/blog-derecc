@@ -47,13 +47,11 @@ public class FileController {
             throw new RuntimeException(e);
         }
 
-        if (contentType == null) contentType = "aplication/octet-stream";
+        if (contentType == null) contentType = "application/octet-stream";
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, // attach in header of response.
-                        "attachment; filename=\""
-                                + resource.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION)
                 .body(resource);
     }
 }

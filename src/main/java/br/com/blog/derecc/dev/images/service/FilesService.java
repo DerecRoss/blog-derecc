@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class FilesService {
@@ -37,7 +38,19 @@ public class FilesService {
     }
 
     public String storeFile(MultipartFile file){
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+
+        String originalName = file.getOriginalFilename();
+
+        String extension =
+                originalName.substring(
+                        originalName.lastIndexOf(".")
+                );
+
+        String fileName =
+                UUID.randomUUID() + extension;
+
+
+//        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
         try{
             if (fileName.contains("../")) throw new RuntimeException();
