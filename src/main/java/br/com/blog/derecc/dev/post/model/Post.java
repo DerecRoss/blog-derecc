@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "post")
-public class PostModel {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,5 +43,12 @@ public class PostModel {
 
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ImagesModel> images = new ArrayList<>();
 
 }

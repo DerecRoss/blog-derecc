@@ -1,11 +1,12 @@
 package br.com.blog.derecc.dev.images.model;
 
-import br.com.blog.derecc.dev.post.model.PostModel;
+import br.com.blog.derecc.dev.post.model.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -20,9 +21,7 @@ public class ImagesModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileName;
-
-    private String filePath;
+    private String originalFileName;
 
     private String storedFileName;
 
@@ -30,6 +29,10 @@ public class ImagesModel {
 
     private Long size;
 
+    @CreationTimestamp
     LocalDateTime uploadedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

@@ -1,4 +1,4 @@
-package br.com.blog.derecc.dev.images;
+package br.com.blog.derecc.dev.images.controller;
 
 import br.com.blog.derecc.dev.images.dto.UploadFileResponseDto;
 import br.com.blog.derecc.dev.images.service.FilesService;
@@ -37,7 +37,7 @@ public class FileController {
         );
     }
 
-    @GetMapping("/downloadFile/{filename:.+}")
+    @GetMapping("/uploads/{filename:.+}")
     public ResponseEntity<Resource> download(@PathVariable String filename, HttpServletRequest request){
         Resource resource = service.loadFile(filename);
         String contentType = null;
