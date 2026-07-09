@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class PostUpdateRequest {
 
-    String title;
-    String excerpt;
-    String content;
-    PostStatus status;
+    private String title;
+    private String excerpt;
+    private String content;
+    private PostStatus status;
 
 }

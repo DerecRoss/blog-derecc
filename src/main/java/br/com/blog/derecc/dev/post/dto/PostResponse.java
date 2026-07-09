@@ -13,13 +13,13 @@ import java.util.List;
 @Data
 public class PostResponse {
 
-    Long id;
-    String title;
-    String slug;
-    String excerpt;
-    String content;
-    PostStatus status;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
-
+    private Long id;
+    private String title;
+    private String slug;
+    private String excerpt;
+    private String content;
+    private PostStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    List<String> imageUrls;
 }

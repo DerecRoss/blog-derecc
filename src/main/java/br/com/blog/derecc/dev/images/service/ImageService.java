@@ -8,8 +8,8 @@ import br.com.blog.derecc.dev.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
-import java.awt.*;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +18,13 @@ public class ImageService {
     private final PostRepository postRepository;
     private final ImageRepository imageRepository;
     private final FilesService filesService;
+
+    private static final List<String> ALLOWED_TYPES =
+            List.of(
+                    "image/png",
+                    "image/jpeg",
+                    "image/webp"
+            );
 
     public UploadImageResponse upload(
             Long postId,
@@ -47,10 +54,18 @@ public class ImageService {
 
         image.setPost(post);
 
+        String contentType = file.getContentType();
+
+        if (!ALLOWED_TYPES.contains(contentType)) {
+            throw new RuntimeException(
+                    "Content type is not allowed."
+            );
+        }
+
         imageRepository.save(image);
 
         String imageUrl =
-                "/api/images/" + storedFileName;
+                "/api/files/uploads/" + storedFileName;
 
         return new UploadImageResponse(
                 image.getId(),
