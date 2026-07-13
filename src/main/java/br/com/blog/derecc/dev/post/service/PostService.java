@@ -6,6 +6,7 @@ import br.com.blog.derecc.dev.post.dto.PostUpdateRequest;
 import br.com.blog.derecc.dev.post.enums.PostStatus;
 import br.com.blog.derecc.dev.post.model.Post;
 import br.com.blog.derecc.dev.post.repository.PostRepository;
+import br.com.blog.derecc.dev.user.dto.UserAuthorResponse;
 import br.com.blog.derecc.dev.util.slug.SlugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -108,7 +109,18 @@ public class PostService {
         entity = postRepository.save(entity);
         logger.info("Saving post in database.");
 
-        return parseObject(entity, PostResponse.class);
+        PostResponse postResponse = parseObject(entity, PostResponse.class);
+        if (entity.getAuthor() != null) {
+
+            UserAuthorResponse userAuthorResponse =
+                    parseObject(
+                            entity.getAuthor(),
+                            UserAuthorResponse.class
+                    );
+
+            postResponse.setAuthor(userAuthorResponse);
+        }
+        return postResponse;
     }
 
     public PostResponse update(Long id, PostUpdateRequest postUpdateRequest){

@@ -2,6 +2,7 @@ package br.com.blog.derecc.dev.post.model;
 
 import br.com.blog.derecc.dev.images.model.ImagesModel;
 import br.com.blog.derecc.dev.post.enums.PostStatus;
+import br.com.blog.derecc.dev.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +44,10 @@ public class Post {
 
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
 
     @OneToMany(
             mappedBy = "post",

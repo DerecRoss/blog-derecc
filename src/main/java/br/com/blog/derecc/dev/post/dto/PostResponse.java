@@ -1,6 +1,7 @@
 package br.com.blog.derecc.dev.post.dto;
 
 import br.com.blog.derecc.dev.post.enums.PostStatus;
+import br.com.blog.derecc.dev.user.dto.UserAuthorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,5 @@ public class PostResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     List<String> imageUrls;
+    private UserAuthorResponse author;
 }

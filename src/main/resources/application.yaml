@@ -1,3 +1,6 @@
+jwt:
+  secret-key: YmxvZy1kZXJlY2Mtand0LXN1cGVyLXNlY3JldC1rZXktMjAyNgo=
+  expiration: 86400000
 file:
   upload-dir: uploadDir
 spring:
