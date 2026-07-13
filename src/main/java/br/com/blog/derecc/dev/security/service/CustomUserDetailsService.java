@@ -1,4 +1,4 @@
-package br.com.blog.derecc.dev.user.service;
+package br.com.blog.derecc.dev.security.service;
 
 import br.com.blog.derecc.dev.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

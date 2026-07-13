@@ -1,4 +1,4 @@
-package br.com.blog.derecc.dev.user.dto;
+package br.com.blog.derecc.dev.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

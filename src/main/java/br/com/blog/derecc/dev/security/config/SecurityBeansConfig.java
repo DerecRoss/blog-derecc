@@ -1,4 +1,4 @@
-package br.com.blog.derecc.dev.config;
+package br.com.blog.derecc.dev.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

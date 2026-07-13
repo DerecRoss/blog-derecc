@@ -1,7 +1,7 @@
-package br.com.blog.derecc.dev.config;
+package br.com.blog.derecc.dev.security.config;
 
-import br.com.blog.derecc.dev.user.service.CustomUserDetailsService;
-import br.com.blog.derecc.dev.user.service.JwtService;
+import br.com.blog.derecc.dev.security.service.CustomUserDetailsService;
+import br.com.blog.derecc.dev.security.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

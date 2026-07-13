@@ -1,4 +1,4 @@
-package br.com.blog.derecc.dev.config;
+package br.com.blog.derecc.dev.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

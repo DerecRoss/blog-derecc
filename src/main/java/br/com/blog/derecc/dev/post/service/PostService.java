@@ -6,7 +6,9 @@ import br.com.blog.derecc.dev.post.dto.PostUpdateRequest;
 import br.com.blog.derecc.dev.post.enums.PostStatus;
 import br.com.blog.derecc.dev.post.model.Post;
 import br.com.blog.derecc.dev.post.repository.PostRepository;
+import br.com.blog.derecc.dev.security.service.AuthService;
 import br.com.blog.derecc.dev.user.dto.UserAuthorResponse;
+import br.com.blog.derecc.dev.user.model.User;
 import br.com.blog.derecc.dev.util.slug.SlugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,11 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private AuthService authService;
+
+
 
     private final Logger logger = Logger.getLogger(PostService.class.getName());
 
@@ -99,12 +106,11 @@ public class PostService {
     public PostResponse save(PostCreateRequest postCreateRequest){
         if (postCreateRequest == null) throw new RuntimeException();
 
-        var entity = parseObject(postCreateRequest, Post.class);
+        Post entity = parseObject(postCreateRequest, Post.class);
 
-        entity.setSlug(
-                SlugUtils.generate(entity.getTitle())
-        );
-        entity.setStatus(PostStatus.PUBLISHED);
+        User authenticatedUser = authService.getAuthenticatedUser();
+
+        entity.setAuthor(authenticatedUser);
 
         entity = postRepository.save(entity);
         logger.info("Saving post in database.");
@@ -112,13 +118,13 @@ public class PostService {
         PostResponse postResponse = parseObject(entity, PostResponse.class);
         if (entity.getAuthor() != null) {
 
-            UserAuthorResponse userAuthorResponse =
+            UserAuthorResponse author =
                     parseObject(
                             entity.getAuthor(),
                             UserAuthorResponse.class
                     );
 
-            postResponse.setAuthor(userAuthorResponse);
+            postResponse.setAuthor(author);
         }
         return postResponse;
     }

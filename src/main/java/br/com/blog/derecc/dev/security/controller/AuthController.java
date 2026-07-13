@@ -1,7 +1,7 @@
-package br.com.blog.derecc.dev.user.controller;
+package br.com.blog.derecc.dev.security.controller;
 
-import br.com.blog.derecc.dev.user.dto.LoginRequest;
-import br.com.blog.derecc.dev.user.dto.LoginResponse;
+import br.com.blog.derecc.dev.security.dto.LoginRequest;
+import br.com.blog.derecc.dev.security.dto.LoginResponse;
 import br.com.blog.derecc.dev.user.dto.UserAuthorResponse;
 import br.com.blog.derecc.dev.user.dto.UserRegisterRequest;
 import br.com.blog.derecc.dev.user.service.UserService;

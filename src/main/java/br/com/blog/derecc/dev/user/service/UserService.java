@@ -1,7 +1,8 @@
 package br.com.blog.derecc.dev.user.service;
 
-import br.com.blog.derecc.dev.user.dto.LoginRequest;
-import br.com.blog.derecc.dev.user.dto.LoginResponse;
+import br.com.blog.derecc.dev.security.dto.LoginRequest;
+import br.com.blog.derecc.dev.security.dto.LoginResponse;
+import br.com.blog.derecc.dev.security.service.JwtService;
 import br.com.blog.derecc.dev.user.dto.UserAuthorResponse;
 import br.com.blog.derecc.dev.user.dto.UserRegisterRequest;
 import br.com.blog.derecc.dev.user.enums.UserRole;
