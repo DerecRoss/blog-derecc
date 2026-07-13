@@ -3,11 +3,11 @@ package br.com.blog.derecc.dev.user.controller;
 import br.com.blog.derecc.dev.security.service.AuthService;
 import br.com.blog.derecc.dev.user.dto.UserAuthorResponse;
 import br.com.blog.derecc.dev.user.model.User;
+import br.com.blog.derecc.dev.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/users")
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final AuthService authService;
+
+    private final UserService userService;
 
     @GetMapping("/me")
     public ResponseEntity<UserAuthorResponse> getMe() {
@@ -32,5 +34,22 @@ public class UserController {
                 );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/me/avatar")
+    public ResponseEntity<UserAuthorResponse> uploadAvatar(
+            @RequestParam("file")
+            MultipartFile file
+    ) {
+
+        User user =
+                authService.getAuthenticatedUser();
+
+        return ResponseEntity.ok(
+                userService.updateAvatar(
+                        file,
+                        user
+                )
+        );
     }
 }

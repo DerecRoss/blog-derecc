@@ -1,5 +1,6 @@
 package br.com.blog.derecc.dev.user.service;
 
+import br.com.blog.derecc.dev.images.service.FilesService;
 import br.com.blog.derecc.dev.security.dto.LoginRequest;
 import br.com.blog.derecc.dev.security.dto.LoginResponse;
 import br.com.blog.derecc.dev.security.service.JwtService;
@@ -8,9 +9,12 @@ import br.com.blog.derecc.dev.user.dto.UserRegisterRequest;
 import br.com.blog.derecc.dev.user.enums.UserRole;
 import br.com.blog.derecc.dev.user.model.User;
 import br.com.blog.derecc.dev.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.logging.Logger;
 
@@ -22,6 +26,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FilesService filesService;
 
     @Autowired
     private JwtService jwtService;
@@ -55,6 +62,35 @@ public class UserService {
         userAuthorResponse.setUserRole(user.getUserRole());
 
         return userAuthorResponse;
+    }
+
+    @Transactional
+    public UserAuthorResponse updateAvatar(
+            MultipartFile file,
+            User user
+    ) {
+
+        String fileName =
+                filesService.storeFile(file);
+
+        String avatarUrl =
+                ServletUriComponentsBuilder
+                        .fromCurrentContextPath()
+                        .path("/api/images/downloadFile/")
+                        .path(fileName)
+                        .toUriString();
+
+        user.setAvatarUrl(avatarUrl);
+
+        user = userRepository.save(user);
+
+        return new UserAuthorResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getAvatarUrl(),
+                user.getUserRole()
+        );
     }
 
     public LoginResponse login(
