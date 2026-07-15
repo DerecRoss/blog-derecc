@@ -76,7 +76,7 @@ public class UserService {
         String avatarUrl =
                 ServletUriComponentsBuilder
                         .fromCurrentContextPath()
-                        .path("/api/images/downloadFile/")
+                        .path("/api/files/uploads/")
                         .path(fileName)
                         .toUriString();
 

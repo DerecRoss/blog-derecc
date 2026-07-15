@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -132,24 +133,90 @@ public class PostService {
     public PostResponse update(Long id, PostUpdateRequest postUpdateRequest){
         if (postUpdateRequest == null) throw new RuntimeException();
 
-        var entity = postRepository.findById(id)
+        var post = postRepository.findById(id)
                 .orElseThrow(RuntimeException::new);
 
-        entity.setContent(postUpdateRequest.getContent());
-        entity.setExcerpt(postUpdateRequest.getExcerpt());
-        entity.setStatus(postUpdateRequest.getStatus());
-        entity.setTitle(postUpdateRequest.getTitle());
+        User user =
+                authService.getAuthenticatedUser();
 
-        entity.setSlug(
+        if (!post.getAuthor()
+                .getId()
+                .equals(user.getId())) {
+
+            throw new RuntimeException(
+                    "User cant edit this."
+            );
+        }
+
+        post.setContent(postUpdateRequest.getContent());
+        post.setExcerpt(postUpdateRequest.getExcerpt());
+        post.setStatus(postUpdateRequest.getStatus());
+        post.setTitle(postUpdateRequest.getTitle());
+
+        post.setSlug(
                 SlugUtils.generate(
                         postUpdateRequest.getTitle()
                 )
         );
 
-        entity = postRepository.save(entity);
+        post = postRepository.save(post);
         logger.info("Update post in database.");
 
-        return parseObject(entity, PostResponse.class);
+        return parseObject(post, PostResponse.class);
+    }
+
+    public Page<PostResponse> findMyPosts(Pageable pageable){
+
+        User user = authService.getAuthenticatedUser();
+
+        Page<Post> posts =
+                postRepository.findByAuthor(
+                        user,
+                        pageable
+                );
+
+        return posts.map(this::toResponse);
+    }
+
+    private void validateOwnership(Post post){
+
+        User currentUser =
+                authService.getAuthenticatedUser();
+
+        if (!post.getAuthor()
+                .getId()
+                .equals(currentUser.getId())) {
+
+            throw new AccessDeniedException(
+                    "User cant edit this."
+            );
+        }
+    }
+
+    private PostResponse toResponse(Post post) {
+
+        PostResponse response = new PostResponse();
+
+        response.setId(post.getId());
+        response.setTitle(post.getTitle());
+        response.setSlug(post.getSlug());
+        response.setExcerpt(post.getExcerpt());
+        response.setContent(post.getContent());
+        response.setStatus(post.getStatus());
+        response.setCreatedAt(post.getCreatedAt());
+
+        if (post.getAuthor() != null) {
+
+            UserAuthorResponse author = new UserAuthorResponse();
+
+            author.setId(post.getAuthor().getId());
+            author.setUsername(post.getAuthor().getUsername());
+            author.setAvatarUrl(post.getAuthor().getAvatarUrl());
+
+            response.setAuthor(author);
+        }
+
+        return response;
     }
 
     public void delete(Long id){
@@ -157,6 +224,8 @@ public class PostService {
                 .orElseThrow(RuntimeException::new);
 
         logger.info("Delete post in database.");
+
+        validateOwnership(entity);
 
         postRepository.delete(entity);
     }

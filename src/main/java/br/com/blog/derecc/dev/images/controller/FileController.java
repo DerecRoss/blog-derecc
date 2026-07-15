@@ -25,7 +25,7 @@ public class FileController {
     public UploadFileResponseDto uploadImage(@RequestParam("file") MultipartFile file){
         var fileName = service.storeFile(file);
         var fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/images/downloadFile/")
+                .path("/api/files/uploads/")
                 .path(fileName)
                 .toUriString();
 
@@ -51,7 +51,6 @@ public class FileController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION)
                 .body(resource);
     }
 }

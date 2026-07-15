@@ -56,6 +56,11 @@ public class PostController {
         );
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<Page<PostResponse>> findMyPosts(Pageable pageable){
+        return ResponseEntity.ok(service.findMyPosts(pageable));
+    }
+
     @GetMapping
     public ResponseEntity<Page<PostResponse>>
     published(

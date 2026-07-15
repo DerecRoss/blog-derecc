@@ -5,7 +5,11 @@ import br.com.blog.derecc.dev.images.model.ImagesModel;
 import br.com.blog.derecc.dev.images.repository.ImageRepository;
 import br.com.blog.derecc.dev.post.model.Post;
 import br.com.blog.derecc.dev.post.repository.PostRepository;
+import br.com.blog.derecc.dev.security.service.AuthService;
+import br.com.blog.derecc.dev.user.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -14,6 +18,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
+
+    @Autowired
+    private AuthService authService;
 
     private final PostRepository postRepository;
     private final ImageRepository imageRepository;
@@ -34,6 +41,8 @@ public class ImageService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() ->
                         new RuntimeException("Post não encontrado"));
+
+        validateOwnership(post);
 
         String storedFileName =
                 filesService.storeFile(file);
@@ -71,5 +80,20 @@ public class ImageService {
                 image.getId(),
                 imageUrl
         );
+    }
+
+    private void validateOwnership(Post post){
+
+        User currentUser =
+                authService.getAuthenticatedUser();
+
+        if (!post.getAuthor()
+                .getId()
+                .equals(currentUser.getId())) {
+
+            throw new AccessDeniedException(
+                    "User cant edit this."
+            );
+        }
     }
 }
