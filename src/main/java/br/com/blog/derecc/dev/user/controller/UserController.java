@@ -27,7 +27,7 @@ public class UserController {
         UserAuthorResponse response =
                 new UserAuthorResponse(
                         user.getId(),
-                        user.getUsername(),
+                        user.getDisplayName(),
                         user.getEmail(),
                         user.getAvatarUrl(),
                         user.getUserRole()

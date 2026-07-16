@@ -58,7 +58,7 @@ public class UserService {
         userAuthorResponse.setAvatarUrl(user.getAvatarUrl());
         userAuthorResponse.setEmail(user.getEmail());
         userAuthorResponse.setId(user.getId());
-        userAuthorResponse.setUsername(user.getUsername());
+        userAuthorResponse.setUsername(user.getDisplayName());
         userAuthorResponse.setUserRole(user.getUserRole());
 
         return userAuthorResponse;
@@ -86,7 +86,7 @@ public class UserService {
 
         return new UserAuthorResponse(
                 user.getId(),
-                user.getUsername(),
+                user.getDisplayName(),
                 user.getEmail(),
                 user.getAvatarUrl(),
                 user.getUserRole()

@@ -43,7 +43,7 @@ public class PostService {
 
         logger.info("Search post in database.");
 
-        return parseObject(entity, PostResponse.class);
+        return toResponse(entity);
     }
 
     public Page<PostResponse> findAll(Pageable pageable){
@@ -51,9 +51,7 @@ public class PostService {
 
         logger.info("Listing all posts in database.");
 
-        return posts.map(p -> {
-            return parseObject(p, PostResponse.class);
-        });
+        return posts.map(this::toResponse);
     }
 
     public List<PostResponse> search(
@@ -73,7 +71,7 @@ public class PostService {
     public PostResponse findBySlug(String slug) {
         var entity = postRepository.findBySlug(slug).orElseThrow(RuntimeException::new);
 
-        return parseObject(entity, PostResponse.class);
+        return toResponse(entity);
     }
 
     public Page<PostResponse> findPublished(
@@ -95,13 +93,7 @@ public class PostService {
                         pageable
                 );
 
-        return posts.map(
-                post ->
-                        parseObject(
-                                post,
-                                PostResponse.class
-                        )
-        );
+        return posts.map(this::toResponse);
     }
 
     public PostResponse save(PostCreateRequest postCreateRequest){
@@ -210,7 +202,7 @@ public class PostService {
             UserAuthorResponse author = new UserAuthorResponse();
 
             author.setId(post.getAuthor().getId());
-            author.setUsername(post.getAuthor().getUsername());
+            author.setUsername(post.getAuthor().getDisplayName());
             author.setAvatarUrl(post.getAuthor().getAvatarUrl());
 
             response.setAuthor(author);

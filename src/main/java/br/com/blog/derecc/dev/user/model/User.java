@@ -67,6 +67,10 @@ public class User implements UserDetails {
         return email;
     }
 
+    public String getDisplayName() {
+        return this.username;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
