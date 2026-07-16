@@ -1,25 +1,25 @@
 jwt:
-  secret-key: YmxvZy1kZXJlY2Mtand0LXN1cGVyLXNlY3JldC1rZXktMjAyNgo=
+  secret-key: ${JWT_SECRET:minha-chave-local}
   expiration: 86400000
 file:
-  upload-dir: uploadDir
+  upload-dir: ${UPLOAD_DIR:uploadDir}
+
 spring:
   application:
     name: derecc.dev
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/derecc
-    username: root
-    password: root
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/derecc}
+    username: ${PGUSER:root}
+    password: ${PGPASSWORD:root}
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
-      format_sql: true
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
 
   servlet:
     multipart:
@@ -27,3 +27,6 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 200MB
       max-request-size: 215MB
+
+server:
+  port: ${PORT:8080}
